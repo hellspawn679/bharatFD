@@ -1,25 +1,33 @@
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from django.core.cache import cache
 from .models import FAQ
 from .serializers import FAQSerializer
 
 @api_view(['GET'])
 def get_faqs(request):
     lang = request.GET.get('lang', 'en')
-    faqs = FAQ.objects.all()
+    cache_key = f'faqs_{lang}'
 
-    # Create a list of translated FAQ data
-    faq_data = []
+    # Check if the cached data exists
+    faqs = cache.get(cache_key)
+    #print(f"Cache hit: {faqs is not None}")  # Debugging statement
 
-    for faq in faqs:
-        translated_data = faq.get_translation(lang)
-        # Append translated data to the faq_data list
-        faq_data.append({
-            "id": faq.id,
-            "question": translated_data["question"],
-            "answer": translated_data["answer"],
-        })
+    if faqs is None:
+        #print("Cache miss! Fetching from database...") 
+        faqs = FAQ.objects.all()
 
-    # Use the FAQSerializer to serialize the translated FAQ data
-    serializer = FAQSerializer(faq_data, many=True)
-    return Response(serializer.data)
+        # Translate and prepare data
+        for faq in faqs:
+            translated_data = faq.get_translation(lang)
+            faq.question = translated_data["question"]
+            faq.answer = translated_data["answer"]
+
+        # Serialize the FAQs
+        serializer = FAQSerializer(faqs, many=True)
+        faqs = serializer.data 
+
+    
+        cache.set(cache_key, faqs, timeout=3600)  
+
+    return Response(faqs)  
