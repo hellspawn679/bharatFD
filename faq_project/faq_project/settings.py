@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-aif=bq=sfxy^$=8uc=f2j$ao3h81wbbod9@*=fuj0$oemgng94
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Caching settings for Redis
 CACHES = {

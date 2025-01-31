@@ -13,7 +13,7 @@ class FAQModelTestCase(TestCase):
 
     def test_hindi_translation(self):
         """Test for Hindi translation of question and answer."""
-        self.faq.refresh_from_db()  # Refresh to get the latest saved data
+        self.faq.refresh_from_db()  
         self.assertEqual(self.faq.question_hi, "आपका क्या नाम है?")
         self.assertEqual(self.faq.answer_hi, "<p> मेरा नाम मेहुल है। </p>")
 
