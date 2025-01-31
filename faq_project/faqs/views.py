@@ -9,8 +9,13 @@ def get_faqs(request):
     lang = request.GET.get('lang', 'en')
     cache_key = f'faqs_{lang}'
 
-    # Check if the cached data exists
-    faqs = cache.get(cache_key)
+    try:
+        # Check if the cached data exists
+        faqs = cache.get(cache_key)
+    except Exception as e:
+        # no redis avaliable 
+        #print(f"Error retrieving cache: {e}")
+        faqs = None
     #print(f"Cache hit: {faqs is not None}")  # Debugging statement
 
     if faqs is None:
@@ -27,7 +32,9 @@ def get_faqs(request):
         serializer = FAQSerializer(faqs, many=True)
         faqs = serializer.data 
 
-    
-        cache.set(cache_key, faqs, timeout=3600)  
+        try:
+            cache.set(cache_key, faqs, timeout=3600)  
+        except Exception :
+            print("no redis")
 
     return Response(faqs)  
