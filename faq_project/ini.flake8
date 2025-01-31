@@ -1,0 +1,3 @@
+[flake8]
+exclude = faqs/migrations, faq_project
+max-line-length = 79

@@ -4,6 +4,7 @@ from googletrans import Translator
 
 translator = Translator()
 
+
 class FAQ(models.Model):
     question = models.TextField()
     answer = RichTextField()
@@ -11,7 +12,7 @@ class FAQ(models.Model):
     question_bn = models.TextField(null=True, blank=True)
     answer_hi = RichTextField(null=True, blank=True)
     answer_bn = RichTextField(null=True, blank=True)
-    language = models.CharField(max_length=10, default="en")  # Default to English
+    language = models.CharField(max_length=10, default="en")
 
     def save(self, *args, **kwargs):
         """Translate question and answer into Hindi & Bengali before saving."""
@@ -45,13 +46,13 @@ class FAQ(models.Model):
         translated_question = getattr(self, f"question_{lang}", None)
         translated_answer = getattr(self, f"answer_{lang}", None)
 
-        if not translated_question:  # If translation not found, translate dynamically
+        if not translated_question:
             translated_question = self.translate_text(self.question, lang)
         if not translated_answer:
             translated_answer = self.translate_text(self.answer, lang)
 
         return {
-            "question": translated_question or self.question,  # Fallback to original
+            "question": translated_question or self.question,
             "answer": translated_answer or self.answer,
         }
 

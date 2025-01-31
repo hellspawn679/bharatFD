@@ -3,6 +3,8 @@ from rest_framework.decorators import api_view
 from django.core.cache import cache
 from .models import FAQ
 from .serializers import FAQSerializer
+import logging
+
 
 @api_view(['GET'])
 def get_faqs(request):
@@ -10,16 +12,13 @@ def get_faqs(request):
     cache_key = f'faqs_{lang}'
 
     try:
-        # Check if the cached data exists
         faqs = cache.get(cache_key)
-    except Exception as e:
-        # no redis avaliable 
-        #print(f"Error retrieving cache: {e}")
+        print("cache found")
+    except Exception:
         faqs = None
-    #print(f"Cache hit: {faqs is not None}")  # Debugging statement
+    logging.debug("got here ")
 
     if faqs is None:
-        #print("Cache miss! Fetching from database...") 
         faqs = FAQ.objects.all()
 
         # Translate and prepare data
@@ -30,12 +29,13 @@ def get_faqs(request):
 
         # Serialize the FAQs
         serializer = FAQSerializer(faqs, many=True)
-        faqs = serializer.data 
+        faqs = serializer.data
 
         try:
-            cache.set(cache_key, faqs, timeout=3600)  
-        except Exception :
-            print("no redis")
-    #else:
-    #    print("found cache")
-    return Response(faqs)  
+            cache.set(cache_key, faqs, timeout=3600)
+        except Exception:
+            print("redis not found ")
+
+    else:
+        logging.debug("got cache ")
+    return Response(faqs)
