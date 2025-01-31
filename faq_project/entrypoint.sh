@@ -1,10 +1,8 @@
 #!/bin/bash
-# entrypoint.sh
 
 python manage.py makemigrations
 python manage.py migrate
 python manage.py createcachetable
-
 
 # Create the superuser without prompting for password
 python manage.py createsuperuser --noinput --username admin --email admin@example.com
@@ -16,9 +14,6 @@ user = User.objects.get(username='admin')
 user.set_password('admin') 
 user.save()
 EOF
-
-
-
 
 # Run the Django development server
 echo "Starting the Django server..."
