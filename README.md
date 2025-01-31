@@ -31,6 +31,7 @@ Ensure you have the following installed:
 - **Redis Caching**: Optimized performance by storing API responses.
 - **Docker Support**: Easily deploy the application using Docker and Docker Compose.
 - **GitHub CI/CD**: Automated linting and testing using GitHub Actions.
+- **AWS Deployment**:  Deployed and hosted on Amazon Web Services (AWS).
 
 ##  Project Structure
 
@@ -102,8 +103,8 @@ This will start both the Django application and Redis container.
 ```sh
   http://127.0.0.1:8000/admin
 ```
-default id:- admin
-default password:- admin
+**default id** :- admin
+**default password** :- admin
 ### Get FAQs
 
 Retrieve FAQs in a specific language.
@@ -117,7 +118,7 @@ GET /api/faqs/?lang=<language_code>
 **Example:**
 
 ```sh
-GET /api/faqs/?lang=fr
+GET http://127.0.0.1:8000/api/faqs/?lang=fr
 ```
 
 **Response:**
@@ -128,10 +129,36 @@ GET /api/faqs/?lang=fr
         "id": 1,
         "question": "Quelle est votre politique de retour ?",
         "answer": "Nous acceptons les retours sous 30 jours."
+    },
+    {
+        "id": 2,
+        "question": "Comment puis-je contacter le service client ?",
+        "answer": "Vous pouvez nous contacter par email à support@example.com ou par téléphone au +33 1 23 45 67 89."
     }
 ]
 ```
+**Example:**
 
+```sh
+GET http://127.0.0.1:8000/api/faqs
+```
+
+**Response:**
+
+```json
+[
+    {
+        "id": 1,
+        "question": "What is your return policy?",
+        "answer": "We accept returns within 30 days."
+    },
+    {
+        "id": 2,
+        "question": "How can I contact customer support?",
+        "answer": "You can contact us by email at support@example.com or by phone at +1 555 123 4567."
+    }
+]
+```
 
 ## Contribution Guidelines
 
