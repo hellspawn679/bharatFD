@@ -1,4 +1,4 @@
 venv
-faqs\__pycache__
-faqs\migrations
-db.sqlite3
+faq_project\faqs\__pycache__\*
+faq_project\faqs\migrations\*
+faq_project\db.sqlite3
