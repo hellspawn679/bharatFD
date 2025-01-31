@@ -36,5 +36,6 @@ def get_faqs(request):
             cache.set(cache_key, faqs, timeout=3600)  
         except Exception :
             print("no redis")
-
+    #else:
+    #    print("found cache")
     return Response(faqs)  
