@@ -1,4 +1,5 @@
-venv
-faq_project\faqs\__pycache__\*
-faq_project\faqs\migrations\*
-faq_project\db.sqlite3
+venv/
+faq_project/faq_project/__pycache__/
+faq_project/faqs/migrations/
+faq_project/db.sqlite3
+faq_project/logs/django.log
